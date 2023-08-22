@@ -1,8 +1,5 @@
-/ObjectDetection/venv/Lib
-/ObjectDetection/models
-/ObjectDetection/.idea
-ObjectDetection/media
+
 /venv
-Chat/venv
-Chat/media
-Chat/models
+/CarDetection/venv
+/CarDetection/media
+/CarDetection/models
