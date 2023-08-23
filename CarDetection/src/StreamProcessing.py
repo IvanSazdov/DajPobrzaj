@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 from shapely.geometry import Polygon, Point
-
+from datetime import datetime
 
 class StreamProcessing:
     def __init__(self, name, area, file_path):
@@ -11,6 +11,7 @@ class StreamProcessing:
         self.file_path = file_path
 
     def Process(self):
+        current_hour = datetime.now().hour
         model = YOLO("models/yolov8x.pt")
 
         polygon = Polygon(self.area)
@@ -24,6 +25,8 @@ class StreamProcessing:
         while cap.isOpened():
             success, frame = cap.read()
             frame_counter += 1
+            if current_hour != datetime.now().hour:
+                current_hour=datetime.now().hour
 
             if frame_counter % 3 == 0:
                 if success:
@@ -51,20 +54,20 @@ class StreamProcessing:
                             dict[point[1]] = dict[point[1]] + 1
                             cars.add(point[1])
 
-                    cv2.polylines(annotated_frame, [np.array(self.area, np.int32)], True, (255, 255, 0), 3)
-
-                    cv2.putText(annotated_frame,
-                                str(len(cars)),
-                                (annotated_frame.shape[1] // 2, annotated_frame.shape[0] // 2),
-                                cv2.FONT_HERSHEY_SIMPLEX,
-                                5,
-                                (255, 0, 0),
-                                5)
-                    newX = int(annotated_frame.shape[1] * 0.75)
-                    newY = int(annotated_frame.shape[0] * 0.75)
-                    dim = (newX, newY)
-                    annotated_frame = cv2.resize(annotated_frame, dim, interpolation=cv2.INTER_AREA)
-                    cv2.imshow(self.name, annotated_frame)
+                    # cv2.polylines(annotated_frame, [np.array(self.area, np.int32)], True, (255, 255, 0), 3)
+                    #
+                    # cv2.putText(annotated_frame,
+                    #             str(len(cars)),
+                    #             (annotated_frame.shape[1] // 2, annotated_frame.shape[0] // 2),
+                    #             cv2.FONT_HERSHEY_SIMPLEX,
+                    #             5,
+                    #             (255, 0, 0),
+                    #             5)
+                    # newX = int(annotated_frame.shape[1] * 0.75)
+                    # newY = int(annotated_frame.shape[0] * 0.75)
+                    # dim = (newX, newY)
+                    # annotated_frame = cv2.resize(annotated_frame, dim, interpolation=cv2.INTER_AREA)
+                    # cv2.imshow(self.name, annotated_frame)
 
                     if cv2.waitKey(1) & 0xFF == ord("q"):
                         break
