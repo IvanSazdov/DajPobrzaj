@@ -11,7 +11,7 @@ class StreamProcessing:
         self.file_path = file_path
 
     def Process(self):
-        current_hour = datetime.now().hour
+        current_minute = datetime.now().minute
         model = YOLO("models/yolov8x.pt")
 
         polygon = Polygon(self.area)
@@ -25,8 +25,8 @@ class StreamProcessing:
         while cap.isOpened():
             success, frame = cap.read()
             frame_counter += 1
-            if current_hour != datetime.now().hour:
-                current_hour=datetime.now().hour
+            if current_minute != datetime.now().hour:
+                current_minute=datetime.now().hour
 
             if frame_counter % 3 == 0:
                 if success:
