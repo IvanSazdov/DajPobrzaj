@@ -1,6 +1,5 @@
 .idea
 /venv
 /CarDetection/venv
-/CarDetection/src/
 /CarDetection/src/media
 /CarDetection/src/models
