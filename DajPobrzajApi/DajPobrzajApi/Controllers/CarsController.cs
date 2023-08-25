@@ -3,6 +3,8 @@ using DajPobrzajApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Text.Json;
 
 namespace DajPobrzajApi.Controllers
 {
@@ -16,7 +18,21 @@ namespace DajPobrzajApi.Controllers
         [Route("SendCarsData")]
         public IActionResult SendCarsData(CarsDto cars)
         {
-            var result = cars;
+            var filePath = @"C:\Users\ivan.sazdov\Desktop\carsData.json";
+
+            // Read existing data
+            var existingData = System.IO.File.Exists(filePath)
+                               ? System.IO.File.ReadAllText(filePath)
+                               : "[]";
+
+            var carsList = JsonSerializer.Deserialize<List<CarsDto>>(existingData);
+
+            // Add new data
+            carsList.Add(cars);
+
+            // Write back to file
+            System.IO.File.WriteAllText(filePath, JsonSerializer.Serialize(carsList));
+
 
             return Ok();
         }
@@ -26,7 +42,11 @@ namespace DajPobrzajApi.Controllers
         [Route("GetCarsData")]
         public IActionResult GetCarsData()
         {
-            return Ok();
+            var filepath = @"C:\Users\ivan.sazdov\Desktop\carsData.json";
+            var file = System.IO.File.OpenRead(filepath);
+
+            var carsList = JsonSerializer.Deserialize<List<CarsDto>>(file);
+            return new JsonResult(carsList);
         }
     }
 }

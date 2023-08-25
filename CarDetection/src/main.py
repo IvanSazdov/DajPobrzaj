@@ -17,8 +17,13 @@ def main():
     # ]
     # for process in processes:
     #     process.start()
-    car = Car(datetime.now(),"Bogorodica",6)
-    SendingService.SendCarsData(car)
+    while True:
+        car = Car(datetime.now(),"Bogorodica",6)
+        SendingService.SendCarsData(car)
+
+    # cars = SendingService.GetCarsData()
+
+
 
 if __name__ == "__main__":
     main()

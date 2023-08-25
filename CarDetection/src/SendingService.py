@@ -15,3 +15,10 @@ def SendCarsData(cars):
     r = requests.post(url=URL+call, json=data,verify=False)
 
     print(r.status_code)
+
+def GetCarsData():
+    call = "GetCarsData"
+
+    r= requests.get(url=URL+call,verify=False)
+
+    print(r.content)
